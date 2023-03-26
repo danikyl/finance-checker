@@ -26,7 +26,7 @@ func generateReport(context *gin.Context) {
 
 func main() {
 	router := gin.Default()
-	router.GET("/albums", generateReport)
+	router.GET("/getReport", generateReport)
 
 	router.Run("localhost:8080")
 }

@@ -1,10 +1,15 @@
 package main
 
-import "github.com/danikyl/finance-helper/controller"
-
+import (
+	"github.com/danikyl/finance-helper/controller"
+	"github.com/danikyl/finance-helper/service"
+)
 
 func main() {
-	router := controller.NewController()
+	//injecting dependencies
+	financeService := service.NewFinanceServiceImpl()
+	apiController := controller.NewController(financeService)
 
-	router.Run("localhost:8080")
+	//running server
+	apiController.StartServer()
 }

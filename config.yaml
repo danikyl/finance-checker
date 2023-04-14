@@ -1,2 +1,2 @@
 api:
-  url: https://api.bcb.gov.br/dados/serie/bcdata.sgs.11/dados?formato=json
+  url: https://api.bcb.gov.br/dados/serie/bcdata.sgs.4189/dados?formato=json&dataInicial=$initial_date&dataFinal=$final_date

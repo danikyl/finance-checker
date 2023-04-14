@@ -5,20 +5,22 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strconv"
+	"strings"
 	"time"
 
 	"github.com/spf13/viper"
 )
 
 type SelicData struct {
-	Data  string `json:"data"`
+	Date  string `json:"data"`
 	Valor string `json:"valor"`
 }
 
 func PrintSelic() {
 	apiURL := viper.GetString("api.url")
-	resp, err := http.Get(apiURL)
+	formattedUrl := addInitialAndFinalDateVariables(apiURL)
+
+	resp, err := http.Get(formattedUrl)
 	if err != nil {
 		panic(err)
 	}
@@ -35,29 +37,16 @@ func PrintSelic() {
 		panic(err)
 	}
 
-	// Calcular a média das taxas diárias do mês atual
-	today := time.Now()
-	currentMonth := today.Month()
-	totalRate := 0.0
-	countRate := 0
+	selicToday := selicData[len(selicData)-1]
+	fmt.Printf("A taxa SELIC média do mês atual é: %v\n", selicToday.Valor)
+}
 
-	for _, data := range selicData {
-		dateObj, err := time.Parse("2006-01-02", data.Data)
-		if err != nil {
-			panic(err)
-		}
-
-		if dateObj.Month() == currentMonth {
-			rate, err := strconv.ParseFloat(data.Valor, 64)
-			if err != nil {
-				panic(err)
-			}
-
-			totalRate += rate
-			countRate++
-		}
-	}
-
-	averageRate := totalRate / float64(countRate)
-	fmt.Printf("A taxa SELIC média do mês atual é: %.2f\n", averageRate)
+func addInitialAndFinalDateVariables(url string) string {
+	now := time.Now()
+	firstDayOfLastMonth := time.Date(now.Year(), now.Month()-1, 1, 0, 0, 0, 0, now.Location())
+	initialDate := firstDayOfLastMonth.Format("02/01/2006")
+	finalDate := now.Format("02/01/2006")
+	formattedUrl := strings.Replace(url, "$initial_date", initialDate, 1)
+	formattedUrl = strings.Replace(formattedUrl, "$final_date", finalDate, 1)
+	return formattedUrl
 }

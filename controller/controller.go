@@ -8,10 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Router interface {
-	Run(host ...string) (err error)
-}
-
 type ApiController struct {
 	financeService service.FinanceService
 }

@@ -1,4 +1,4 @@
-package model
+package domain
 
 type FinanceReportResponse struct {
 	HouseAmountAfterInterests        float64 `json:"house_amount_after_interests  "`

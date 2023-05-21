@@ -1,20 +1,20 @@
-package service
+package usecase
 
 import (
 	"testing"
 
-	"github.com/danikyl/finance-helper/model"
+	"github.com/danikyl/finance-helper/core/domain"
 )
 
 func TestGenerateReport(t *testing.T) {
-	financeService := NewFinanceServiceImpl()
-	request := model.FinanceReportRequest{
+	generateFinanceReportUseCase := NewGenerateFinanceReportImpl()
+	request := domain.FinanceReportRequest{
 		MonthlyInterestsRate: 0.01,
 		RentPrice:            5000,
 		InstallmentValue:     8000,
 		PeriodInMonths:       120,
 	}
-	report := financeService.GenerateReport(request)
+	report := generateFinanceReportUseCase.Execute(request)
 	got := report.HouseAmountAfterInterests
 	want := float64(960000)
 	if got != want {

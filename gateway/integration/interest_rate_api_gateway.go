@@ -1,4 +1,4 @@
-package gateway
+package integration
 
 import (
 	"encoding/json"
@@ -17,8 +17,12 @@ type SelicData struct {
 }
 
 func PrintSelic() {
+	viper.SetConfigFile("config.yaml")
+	if err := viper.ReadInConfig(); err != nil {
+		panic(err)
+	}
 	apiURL := viper.GetString("api.url")
-	formattedUrl := addInitialAndFinalDateVariables(apiURL)
+	formattedUrl := addInitialAndFinalDateVariablesToUrl(apiURL)
 
 	resp, err := http.Get(formattedUrl)
 	if err != nil {
@@ -41,7 +45,7 @@ func PrintSelic() {
 	fmt.Printf("A taxa SELIC média do mês atual é: %v\n", selicToday.Valor)
 }
 
-func addInitialAndFinalDateVariables(url string) string {
+func addInitialAndFinalDateVariablesToUrl(url string) string {
 	now := time.Now()
 	firstDayOfLastMonth := time.Date(now.Year(), now.Month()-1, 1, 0, 0, 0, 0, now.Location())
 	initialDate := firstDayOfLastMonth.Format("02/01/2006")

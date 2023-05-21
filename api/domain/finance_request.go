@@ -1,4 +1,4 @@
-package model
+package domain
 
 type FinanceReportRequest struct {
 	MonthlyInterestsRate float64 `json:"monthly_interests_rate"`

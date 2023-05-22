@@ -20,7 +20,8 @@ func NewController(generateFinanceReportUsecase usecase.GenerateFinanceReport) *
 func (controller *ApiController) handleGenerateReport(context *gin.Context) {
 	var financeRequest domain.FinanceReportRequest
 	context.BindJSON(&financeRequest)
-	context.IndentedJSON(http.StatusOK, controller.generateFinanceReportUsecase.Execute(mapper.ConvertApiRequestToCoreRequest(financeRequest)))
+	var financeResponse = controller.generateFinanceReportUsecase.Execute(mapper.ConvertApiRequestToCoreRequest(financeRequest))
+	context.IndentedJSON(http.StatusOK, mapper.ConvertCoreResponseToApiResponse(*financeResponse))
 }
 
 func (controller *ApiController) StartServer() {

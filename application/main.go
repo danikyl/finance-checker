@@ -11,7 +11,7 @@ func main() {
 	integration.PrintSelic()
 	//injecting dependencies
 	generateFinanceReportUsecase := usecase.NewGenerateFinanceReportImpl()
-	apiController := controller.NewController(generateFinanceReportUsecase)
+	var apiController controller.Controller = controller.NewController(generateFinanceReportUsecase)
 
 	//running server
 	apiController.StartServer()

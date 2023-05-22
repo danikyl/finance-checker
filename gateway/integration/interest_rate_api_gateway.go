@@ -17,7 +17,7 @@ type SelicData struct {
 }
 
 func PrintSelic() {
-	viper.SetConfigFile("config.yaml")
+	viper.SetConfigFile("gateway/config.yaml")
 	if err := viper.ReadInConfig(); err != nil {
 		panic(err)
 	}
